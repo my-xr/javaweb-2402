@@ -1,0 +1,16 @@
+package com.gzu.ctts;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+@SpringBootApplication
+@MapperScan("com.gzu.ctts.mapper")
+public class CttsApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(CttsApplication.class, args);
+    }
+
+}
