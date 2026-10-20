@@ -1,0 +1,68 @@
+# 配置mybatis
+spring:
+  datasource:
+    # JDBC URL（必含时区参数 serverTimezone=Asia/Shanghai，避免时区报错）
+    url: jdbc:mysql://ctts-mysql:3306/ctts?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # HikariCP 连接池配置（Spring Boot 默认）
+    hikari:
+      minimum-idle: 5          # 最小空闲连接数
+      maximum-pool-size: 20    # 最大连接数
+      connection-timeout: 30000  # 连接超时时间（毫秒）
+      idle-timeout: 600000     # 空闲连接超时（毫秒）
+      max-lifetime: 1800000    # 连接最大存活时间（毫秒）
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: AUTO
+
+
+# Knife4j 配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha           # 标签字母排序
+    operations-sorter: alpha     # 接口字母排序
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: default
+      paths-to-match: /**
+      packages-to-scan: com.gzu.ctts.controller
+
+# Knife4j 增强配置
+knife4j:
+  enable: true                   # 开启 Knife4j
+  setting:
+    language: zh_cn              # 中文
+    enable-version: true         # 显示版本
+    enable-reload-cache: true    # 支持刷新缓存
+    enable-after-script: true
+    enable-filter-multipart-api-method-type: POST
+    enable-filter-multipart-apis: false
+    enable-request-cache: true
+    enable-host: false
+    enable-host-text: localhost:8080
+    enable-home-custom: false
+    home-custom-path: classpath:markdown/home.md
+    enable-search: false
+    enable-footer: false
+    enable-footer-custom: true
+    footer-custom-content: Apache License 2.0 | Copyright  2024 CTTS
+    enable-dynamic-parameter: false
+    enable-debug: true           # 启用调试
+    enable-open-api: false
+    enable-group: true
+  cors: false
+  production: false              # 生产环境设为 true 关闭文档
+  basic:
+    enable: false                # 是否开启 basic 认证
+    username: admin
+    password: 123456
+
