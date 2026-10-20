@@ -45,4 +45,15 @@ public class TaskController {
         return Result.success("删除任务成功");
     }
 
+    @PutMapping("/{id}")
+    public Result<String> updateTask(@PathVariable Long id, @RequestBody TaskDTO taskDTO){
+        Task task = new Task();
+        BeanUtils.copyProperties(taskDTO, task);
+        task.setId(id);
+        taskService.updateTask(task);
+        return Result.success("修改任务成功");
+    }
+
+
+
 }

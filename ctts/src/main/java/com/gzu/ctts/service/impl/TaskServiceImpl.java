@@ -37,5 +37,10 @@ public class TaskServiceImpl implements TaskService {
         taskMapper.deleteById(id);
     }
 
+    @Override
+    public void updateTask(Task task) {
+        taskMapper.updateById(task);
+    }
+
 
 }
