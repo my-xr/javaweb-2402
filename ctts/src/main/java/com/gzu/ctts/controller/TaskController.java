@@ -54,6 +54,10 @@ public class TaskController {
         return Result.success("修改任务成功");
     }
 
+    @GetMapping("/search")
+    public Result<List<Task>> searchTaskByTitle(@RequestParam String title){
+        return Result.success(taskService.searchTaskByTitle(title));
+    }
 
 
 }

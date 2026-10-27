@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gzu.ctts.mapper.UserMapper">
+
+    <!-- ===== resultMap：字段与属性的映射 ===== -->
+    <!-- type 是实体类全限定名；id 是 resultMap 的唯一标识，供 <select> 引用 -->
+    <resultMap id="BaseResultMap" type="com.gzu.ctts.entity.User">
+        <!-- <id> 标签映射主键字段；column 是数据库列名，property 是 Java 属性名 -->
+        <id column="id" property="id"/>
+        <!-- <result> 标签映射普通字段 -->
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="real_name" property="realName"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectColumn">
+        id
+        , username, password, real_name, phone, email, status, create_time, update_time
+    </sql>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"/>
+        FROM user WHERE id = #{id}
+    </select>
+
+</mapper>

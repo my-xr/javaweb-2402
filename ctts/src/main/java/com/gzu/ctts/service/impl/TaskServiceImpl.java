@@ -42,5 +42,10 @@ public class TaskServiceImpl implements TaskService {
         taskMapper.updateById(task);
     }
 
+    @Override
+    public List<Task> searchTaskByTitle(String title) {
+        return taskMapper.selectByTitle(title);
+    }
+
 
 }
