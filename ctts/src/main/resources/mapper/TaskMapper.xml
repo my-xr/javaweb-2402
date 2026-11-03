@@ -9,4 +9,42 @@
         WHERE id = #{id}
     </select>
 
+
+
+    <select id="selectByTitleOrDescription" resultType="com.gzu.ctts.entity.Task">
+        SELECT * FROM task
+        <where>
+            1=1
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="description != null">
+                AND description LIKE CONCAT('%', #{description}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByPidAndStatus" resultType="com.gzu.ctts.entity.Task">
+        SELECT * FROM task
+        <where>
+            <if test="projectId != null">
+                AND project_id = #{projectId}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByStatusList" resultType="com.gzu.ctts.entity.Task">
+        SELECT * FROM task
+        <where>
+            <if test="statusList != null and statusList.size > 0">
+                AND status IN
+                <foreach collection="statusList" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

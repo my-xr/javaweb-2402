@@ -59,5 +59,20 @@ public class TaskController {
         return Result.success(taskService.searchTaskByTitle(title));
     }
 
+    @GetMapping("/searchByTitleOrDescription")
+    public Result<List<Task>> searchTaskByTitleOrDescription(@RequestParam String title, @RequestParam String description){
+        return Result.success(taskService.getByTitleOrDescription(title, description));
+    }
+
+    @GetMapping("/searchByPidAndStatus")
+    public Result<List<Task>> getByPidAndStatus(@RequestParam(required = false) Long projectId, @RequestParam(required = false) Integer status){
+        return Result.success(taskService.getByPidAndStatus(projectId, status));
+    }
+
+    @GetMapping("/searchByStatusList")
+    public Result<List<Task>> getByStatusList(@RequestParam(required = false) List<Integer> statusList){
+        System.out.println(statusList);
+        return Result.success(taskService.getByStatusList(statusList));
+    }
 
 }

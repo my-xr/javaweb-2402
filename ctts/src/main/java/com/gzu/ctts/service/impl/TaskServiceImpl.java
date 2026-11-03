@@ -47,5 +47,20 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.selectByTitle(title);
     }
 
+    @Override
+    public List<Task> getByTitleOrDescription(String title, String description) {
+        return taskMapper.selectByTitleOrDescription(title, description);
+    }
+
+    @Override
+    public List<Task> getByPidAndStatus(Long projectId, Integer status) {
+        return taskMapper.selectByPidAndStatus(projectId, status);
+    }
+
+    @Override
+    public List<Task> getByStatusList(List<Integer> statusList) {
+        return taskMapper.selectByStatusList(statusList);
+    }
+
 
 }

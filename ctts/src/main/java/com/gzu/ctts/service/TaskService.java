@@ -17,4 +17,11 @@ public interface TaskService {
     void updateTask(Task task);
 
     List<Task> searchTaskByTitle(String title);
+
+    List<Task> getByTitleOrDescription(String title, String description);
+
+    List<Task> getByPidAndStatus(Long projectId, Integer status);
+
+    List<Task> getByStatusList(List<Integer> statusList);
+
 }
