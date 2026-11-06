@@ -1,5 +1,7 @@
 package com.gzu.ctts.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gzu.ctts.common.Result;
 import com.gzu.ctts.dao.TaskDao;
 import com.gzu.ctts.dto.TaskDTO;
@@ -20,8 +22,9 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping
-    public Result<List<Task>> getTask(){
-        return Result.success(taskService.getList()) ;
+    public Result<IPage<Task>> getTask(@RequestParam Integer pageNumber, @RequestParam Integer pageSize){
+        IPage<Task> page = new Page<>(pageNumber, pageSize);
+        return Result.success(taskService.selectPageVo(page)) ;
     }
 
     @PostMapping
@@ -74,5 +77,18 @@ public class TaskController {
         System.out.println(statusList);
         return Result.success(taskService.getByStatusList(statusList));
     }
+
+    @PostMapping("/options")
+    public Result<List<Task>> getOptions(@RequestBody TaskDTO taskDTO){
+        return Result.success(taskService.getByOptions(taskDTO));
+    }
+
+
+    @PostMapping("/optionsByPage")
+    public Result<IPage<Task>> getOptionsByPage(@RequestBody TaskDTO taskDTO, @RequestParam Integer pageNumber, @RequestParam Integer pageSize){
+        IPage<Task> page = new Page<>(pageNumber, pageSize);
+        return Result.success(taskService.getOptionsByPage(taskDTO, page));
+    }
+
 
 }

@@ -1,6 +1,10 @@
 package com.gzu.ctts.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gzu.ctts.dao.TaskDao;
+import com.gzu.ctts.dto.TaskDTO;
 import com.gzu.ctts.entity.Task;
 import com.gzu.ctts.mapper.TaskMapper;
 import com.gzu.ctts.service.TaskService;
@@ -60,6 +64,33 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getByStatusList(List<Integer> statusList) {
         return taskMapper.selectByStatusList(statusList);
+    }
+
+    @Override
+    public List<Task> getByOptions(TaskDTO taskDTO) {
+
+        LambdaQueryWrapper<Task> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(taskDTO.getProjectId()!=null,Task::getProjectId,taskDTO.getProjectId());
+
+        queryWrapper.like(taskDTO.getTitle()!=null && !taskDTO.getTitle().isEmpty(), Task::getTitle, taskDTO.getTitle())
+                .like(taskDTO.getDescription()!=null && !taskDTO.getDescription().isEmpty(), Task::getDescription, taskDTO.getDescription())
+                .eq(taskDTO.getStatus()!=null, Task::getStatus, taskDTO.getStatus())
+                .eq(taskDTO.getDeadline()!=null, Task::getDeadline, taskDTO.getDeadline())
+                .eq(taskDTO.getCreateTime()!=null, Task::getCreateTime, taskDTO.getCreateTime())
+                .eq(taskDTO.getUpdateTime()!=null, Task::getUpdateTime, taskDTO.getUpdateTime())
+                .orderByDesc(Task::getCreateTime);
+
+        return taskMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public IPage<Task> selectPageVo(IPage<?> page) {
+        return taskMapper.selectPageVo(page);
+    }
+
+    @Override
+    public IPage<Task> getOptionsByPage(TaskDTO taskDTO, IPage<?> page) {
+        return taskMapper.selectOptionsByPage(page, taskDTO);
     }
 
 

@@ -4,12 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzu.ctts.mapper.TaskMapper">
 
+    <sql id="taskColumns">
+        id, project_id, title, description, deadline, total_score, `status`, create_time, update_time
+    </sql>
+
     <select id="getById" resultType="com.gzu.ctts.entity.Task">
         SELECT id, project_id, title, description, deadline, total_score, `status`, create_time, update_time FROM task
         WHERE id = #{id}
     </select>
-
-
 
     <select id="selectByTitleOrDescription" resultType="com.gzu.ctts.entity.Task">
         SELECT * FROM task
@@ -44,6 +46,41 @@
                 <foreach collection="statusList" item="item" open="(" close=")" separator=",">
                     #{item}
                 </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPageVo" resultType="com.gzu.ctts.entity.Task">
+        SELECT * FROM task
+    </select>
+
+
+    <select id="selectOptionsByPage" resultType="com.gzu.ctts.entity.Task">
+        SELECT <include refid="taskColumns" /> FROM task
+        <where>
+            <if test="taskDTO.projectId != null">
+                AND project_id = #{taskDTO.projectId}
+            </if>
+            <if test="taskDTO.title != null">
+                AND title LIKE CONCAT('%', #{taskDTO.title}, '%')
+            </if>
+            <if test="taskDTO.description != null">
+                AND description LIKE CONCAT('%', #{taskDTO.description}, '%')
+            </if>
+            <if test="taskDTO.status != null">
+                AND status = #{taskDTO.status}
+            </if>
+            <if test="taskDTO.deadline != null">
+                AND deadline = #{taskDTO.deadline}
+            </if>
+            <if test="taskDTO.totalScore != null">
+                AND total_score = #{taskDTO.totalScore}
+            </if>
+            <if test="taskDTO.createTime != null">
+                AND create_time = #{taskDTO.createTime}
+            </if>
+            <if test="taskDTO.updateTime != null">
+                AND update_time = #{taskDTO.updateTime}
             </if>
         </where>
     </select>

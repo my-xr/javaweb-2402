@@ -1,5 +1,7 @@
 package com.gzu.ctts.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.gzu.ctts.dto.TaskDTO;
 import com.gzu.ctts.entity.Task;
 
 import java.util.List;
@@ -24,4 +26,9 @@ public interface TaskService {
 
     List<Task> getByStatusList(List<Integer> statusList);
 
+    List<Task> getByOptions(TaskDTO taskDTO);
+
+    IPage<Task> selectPageVo(IPage<?> page);
+
+    IPage<Task> getOptionsByPage(TaskDTO taskDTO, IPage<?> page);
 }
