@@ -1,5 +1,7 @@
 package com.gzu.ctts.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gzu.ctts.common.Result;
 import com.gzu.ctts.dto.UserDTO;
 import com.gzu.ctts.entity.User;
@@ -49,5 +51,16 @@ public class UserController {
     @GetMapping("/{id}")
     public Result<User> getUserById(@PathVariable Long id) {
         return Result.success(userService.getUserById(id));
+    }
+
+    @GetMapping("/{id}/withRoles")
+    public Result<User> getByIdWithRoles(@PathVariable Long id) {
+        return Result.success(userService.getByIdWithRoles(id));
+    }
+
+    @GetMapping("/withRoles")
+    public Result<List<User>> getAllUsersWithRoles(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        IPage<User> page = new Page<>(pageNum, pageSize);
+        return Result.success(userService.getPagesWithRoles(page));
     }
 }

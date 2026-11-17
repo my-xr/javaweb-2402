@@ -19,6 +19,11 @@
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
+        <collection property="roles" ofType="com.gzu.ctts.entity.Role">
+            <id column="role_id" property="id"/>
+            <result property="roleCode" column="role_code" />
+            <result column="role_name" property="roleName"/>
+        </collection>
     </resultMap>
 
     <sql id="selectColumn">
@@ -31,5 +36,45 @@
         <include refid="selectColumn"/>
         FROM user WHERE id = #{id}
     </select>
+
+    <select id="selectByIdWithRoles" resultMap="BaseResultMap">
+        SELECT USER.id,
+               USER.username,
+               USER.`password`,
+               USER.real_name,
+               USER.phone,
+               USER.email,
+               role.id AS role_id,
+               role.role_code,
+               role.role_name
+        FROM
+            sys_user
+            AS USER LEFT JOIN sys_user_role ur ON USER.id = ur.user_id
+            LEFT JOIN sys_role role ON ur.role_id = role.id
+        WHERE user.id = #{id}
+    </select>
+
+    <select id="selectPagesWithRoles" resultMap="BaseResultMap">
+        SELECT  <include refid="selectColumn" />
+        FROM sys_user
+    </select>
+
+    <select id="selectUserWithRoles" resultMap="BaseResultMap">
+        SELECT
+            ur.user_id AS id,
+            ur.role_id,
+            role.role_code,
+            role.role_name
+        FROM
+            sys_user_role ur
+                LEFT JOIN sys_role role
+                          ON ur.role_id = role.id
+        WHERE
+            ur.user_id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
 
 </mapper>
