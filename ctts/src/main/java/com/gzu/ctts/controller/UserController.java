@@ -8,8 +8,10 @@ import com.gzu.ctts.entity.User;
 import com.gzu.ctts.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -18,6 +20,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @GetMapping
@@ -29,6 +34,9 @@ public class UserController {
     public Result<String> register(@RequestBody UserDTO userDTO) {
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userService.addUser(user);
         return Result.success("注册成功");
     }

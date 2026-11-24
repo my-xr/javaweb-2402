@@ -8,14 +8,17 @@ import com.gzu.ctts.dto.TaskDTO;
 import com.gzu.ctts.entity.Task;
 import com.gzu.ctts.service.TaskService;
 import com.gzu.ctts.service.impl.TaskServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
+@Validated
 public class TaskController {
 
     @Autowired
@@ -28,7 +31,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public Result<String> addTask(@RequestBody TaskDTO taskDTO){
+    public Result<String> addTask(@Valid @RequestBody TaskDTO taskDTO){
 
         Task task = new Task();
         BeanUtils.copyProperties(taskDTO, task);
